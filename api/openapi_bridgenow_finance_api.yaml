@@ -1,0 +1,631 @@
+openapi: 3.0.3
+info:
+  title: "bridgenow_finance_api"
+  version: "1.0.0"
+  description: "API for BridgeNow Finance Application Journey & Communication"
+servers:
+  - url: https://example.com
+    description: Production server
+paths:
+  /api/v1/bridgenow/landing-page:
+    get:
+      operationId: "VRVTEMP390GetLandingPageContentGET"
+      summary: "Get Landing Page Content"
+      tags:
+        - Landing Page
+      responses:
+        '200':
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LandingPageResponse'
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  /api/v1/bridgenow/applications:
+    post:
+      operationId: "VRVTEMP390SubmitApplicationPOST"
+      summary: "Submit Application"
+      tags:
+        - Applications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationRequest'
+      responses:
+        '201':
+          description: "Application submitted successfully"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+        '400':
+          description: "Bad request - validation error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  /api/v1/bridgenow/eligibility/check:
+    post:
+      operationId: "VRVTEMP390CheckEligibilityPOST"
+      summary: "Check Eligibility"
+      tags:
+        - Eligibility
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EligibilityRequest'
+      responses:
+        '201':
+          description: "Eligibility check completed"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EligibilityResponse'
+        '400':
+          description: "Bad request - validation error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  /api/v1/bridgenow/applications/{applicationId}/status:
+    get:
+      operationId: "VRVTEMP390GetApplicationStatusGET"
+      summary: "Get Application Status"
+      tags:
+        - Applications
+      parameters:
+        - name: applicationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: "Unique application identifier"
+      responses:
+        '200':
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationStatusResponse'
+        '404':
+          description: "Application not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  /api/v1/bridgenow/applications/{applicationId}:
+    put:
+      operationId: "VRVTEMP390UpdateApplicationPUT"
+      summary: "Update Application"
+      tags:
+        - Applications
+      parameters:
+        - name: applicationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: "Unique application identifier"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationUpdateRequest'
+      responses:
+        '200':
+          description: "Application updated successfully"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+        '400':
+          description: "Bad request - validation error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: "Application not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  /api/v1/bridgenow/products/{productId}:
+    get:
+      operationId: "VRVTEMP390GetProductDetailsGET"
+      summary: "Get Product Details"
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: "Unique product identifier"
+      responses:
+        '200':
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetailsResponse'
+        '404':
+          description: "Product not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  /api/v1/bridgenow/communications/templates:
+    get:
+      operationId: "VRVTEMP390GetCommunicationTemplatesGET"
+      summary: "Get Communication Templates"
+      tags:
+        - Communications
+      responses:
+        '200':
+          description: "Successful response"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommunicationTemplate'
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  /api/v1/bridgenow/applications/{applicationId}/manual-review:
+    post:
+      operationId: "VRVTEMP390TriggerManualReviewPOST"
+      summary: "Trigger Manual Review"
+      tags:
+        - Applications
+      parameters:
+        - name: applicationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: "Unique application identifier"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManualReviewRequest'
+      responses:
+        '201':
+          description: "Manual review triggered successfully"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManualReviewResponse'
+        '400':
+          description: "Bad request - validation error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: "Application not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    LandingPageResponse:
+      type: object
+      properties:
+        pageTitle:
+          type: string
+          maxLength: 100
+        heroText:
+          type: string
+          maxLength: 500
+        ctaText:
+          type: string
+          maxLength: 50
+        brandingAssetUrl:
+          type: string
+          maxLength: 500
+        productHighlights:
+          type: string
+        eligibilityCriteria:
+          type: string
+    
+    ApplicationRequest:
+      type: object
+      required:
+        - customerId
+        - firstName
+        - lastName
+        - email
+        - phoneNumber
+        - loanAmount
+        - annualIncome
+        - employmentStatus
+      properties:
+        customerId:
+          type: string
+          format: uuid
+          description: "Customer ID is required and must be a valid GUID"
+        firstName:
+          type: string
+          maxLength: 50
+          pattern: "^[a-zA-Z]+$"
+          description: "First name is required and must contain only letters"
+        lastName:
+          type: string
+          maxLength: 50
+          pattern: "^[a-zA-Z]+$"
+          description: "Last name is required and must contain only letters"
+        email:
+          type: string
+          format: email
+          maxLength: 100
+          description: "Valid email address is required"
+        phoneNumber:
+          type: string
+          maxLength: 20
+          description: "Valid phone number is required"
+        loanAmount:
+          type: number
+          format: decimal
+          minimum: 10000
+          maximum: 500000
+          description: "Loan amount must be between $10,000 and $500,000"
+        annualIncome:
+          type: number
+          format: decimal
+          minimum: 1
+          description: "Annual income must be a positive value"
+        employmentStatus:
+          type: string
+          enum:
+            - Employed
+            - SelfEmployed
+            - Unemployed
+            - Retired
+          description: "Valid employment status is required"
+        creditScore:
+          type: integer
+          minimum: 300
+          maximum: 850
+          description: "Credit score must be between 300 and 850"
+        propertyValue:
+          type: number
+          format: decimal
+          description: "Property value is required for bridge loans"
+    
+    ApplicationResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        customerId:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        loanAmount:
+          type: number
+          format: decimal
+        annualIncome:
+          type: number
+          format: decimal
+        employmentStatus:
+          type: string
+        creditScore:
+          type: integer
+        propertyValue:
+          type: number
+          format: decimal
+        status:
+          type: string
+          enum:
+            - Submitted
+            - Processing
+            - UnderReview
+            - Approved
+            - Rejected
+            - Disbursed
+        isStpEligible:
+          type: boolean
+        eligibilityStatus:
+          type: string
+        currentStage:
+          type: string
+        submittedDate:
+          type: string
+          format: date-time
+        approvedDate:
+          type: string
+          format: date-time
+        reviewAssignedDate:
+          type: string
+          format: date-time
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+    
+    EligibilityRequest:
+      type: object
+      required:
+        - customerId
+      properties:
+        customerId:
+          type: string
+          format: uuid
+        loanAmount:
+          type: number
+          format: decimal
+        annualIncome:
+          type: number
+          format: decimal
+        employmentStatus:
+          type: string
+        creditScore:
+          type: integer
+        propertyValue:
+          type: number
+          format: decimal
+    
+    EligibilityResponse:
+      type: object
+      properties:
+        isEligible:
+          type: boolean
+        isStpEligible:
+          type: boolean
+        status:
+          type: string
+        ruleResults:
+          type: array
+          items:
+            type: object
+            properties:
+              ruleName:
+                type: string
+              passed:
+                type: boolean
+              message:
+                type: string
+        evaluatedDate:
+          type: string
+          format: date-time
+    
+    ApplicationStatusResponse:
+      type: object
+      properties:
+        applicationId:
+          type: string
+          format: uuid
+        status:
+          type: string
+        lastUpdated:
+          type: string
+          format: date-time
+        isStpProcessed:
+          type: boolean
+        currentStage:
+          type: string
+    
+    ApplicationUpdateRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          maxLength: 50
+        lastName:
+          type: string
+          maxLength: 50
+        email:
+          type: string
+          format: email
+        phoneNumber:
+          type: string
+        loanAmount:
+          type: number
+          format: decimal
+        annualIncome:
+          type: number
+          format: decimal
+        employmentStatus:
+          type: string
+        creditScore:
+          type: integer
+        propertyValue:
+          type: number
+          format: decimal
+    
+    ProductDetailsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        productCode:
+          type: string
+        productName:
+          type: string
+        description:
+          type: string
+        minLoanAmount:
+          type: number
+          format: decimal
+        maxLoanAmount:
+          type: number
+          format: decimal
+        interestRate:
+          type: number
+          format: decimal
+        processingFee:
+          type: number
+          format: decimal
+        isActive:
+          type: boolean
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+    
+    CommunicationTemplate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        templateCode:
+          type: string
+        templateName:
+          type: string
+        channel:
+          type: string
+          enum:
+            - Email
+            - SMS
+            - Push
+            - InApp
+        subject:
+          type: string
+        body:
+          type: string
+        isActive:
+          type: boolean
+        complianceApproved:
+          type: boolean
+        approvedDate:
+          type: string
+          format: date-time
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+    
+    ManualReviewRequest:
+      type: object
+      properties:
+        reviewerNotes:
+          type: string
+        priority:
+          type: string
+          enum:
+            - Low
+            - Medium
+            - High
+    
+    ManualReviewResponse:
+      type: object
+      properties:
+        applicationId:
+          type: string
+          format: uuid
+        reviewStatus:
+          type: string
+        assignedReviewer:
+          type: string
+        assignedDate:
+          type: string
+          format: date-time
+    
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        traceId:
+          type: string
+        errorCode:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: string
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []
